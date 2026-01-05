@@ -6,6 +6,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Clock } from 'lucide-react';
+import { getTooltipStyle } from '@/lib/theme-colors';
 
 interface AlertStatusData {
   name: string;
