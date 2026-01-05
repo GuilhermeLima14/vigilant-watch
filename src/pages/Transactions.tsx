@@ -1,31 +1,11 @@
 import { useState } from 'react';
-import { Plus, Search, Calendar, ArrowUpRight, ArrowDownRight, ArrowLeftRight as ArrowTransfer } from 'lucide-react';
 import { useDataStore } from '@/store/dataStore';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageHeader } from '@/components/ui/page-header';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { TransactionsFilterSection } from '@/components/transactions/TransactionsFilterSection';
+import { TransactionsTable } from '@/components/transactions/TransactionsTable';
+import { AddTransactionDialog } from '@/components/transactions/AddTransactionDialog';
 import { useToast } from '@/hooks/use-toast';
-import { format } from 'date-fns';
-import type { TransactionType } from '@/types';
 
 export default function Transactions() {
   const { transactions, clients, addTransaction } = useDataStore();
