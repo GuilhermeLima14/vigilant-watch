@@ -1,31 +1,13 @@
 import { useState } from 'react';
-import { Search, AlertTriangle, CheckCircle, Clock, XCircle, Eye } from 'lucide-react';
 import { useDataStore } from '@/store/dataStore';
 import { useAuthStore } from '@/store/authStore';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageHeader } from '@/components/ui/page-header';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { AlertsStatsSection } from '@/components/alerts/AlertsStatsSection';
+import { AlertsFilterSection } from '@/components/alerts/AlertsFilterSection';
+import { AlertsList } from '@/components/alerts/AlertsList';
+import { AlertDetailDialog } from '@/components/alerts/AlertDetailDialog';
 import { useToast } from '@/hooks/use-toast';
-import { format } from 'date-fns';
 import type { Alert, AlertStatus } from '@/types';
 
 export default function Alerts() {
