@@ -40,13 +40,7 @@ export function RiskDistributionChart({ data }: RiskDistributionChartProps) {
                 <Cell key={`risk-cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip
-              contentStyle={{
-                backgroundColor: 'hsl(222, 47%, 8%)',
-                border: '1px solid hsl(217, 33%, 17%)',
-                borderRadius: '8px',
-              }}
-            />
+            <Tooltip contentStyle={getTooltipStyle()} />
             <Legend
               verticalAlign="bottom"
               height={36}
