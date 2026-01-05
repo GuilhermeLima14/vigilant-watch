@@ -43,11 +43,7 @@ export function TransactionVolumeChart({
               tickFormatter={(v) => formatCurrency(v)}
             />
             <Tooltip
-              contentStyle={{
-                backgroundColor: 'hsl(222, 47%, 8%)',
-                border: '1px solid hsl(217, 33%, 17%)',
-                borderRadius: '8px',
-              }}
+              contentStyle={getTooltipStyle()}
               formatter={(value: number) => formatCurrency(value)}
             />
             <Bar dataKey="value" fill={CHART_COLORS.primary} radius={[4, 4, 0, 0]} />
