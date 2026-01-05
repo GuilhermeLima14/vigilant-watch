@@ -6,6 +6,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
+import { getTooltipStyle } from '@/lib/theme-colors';
 
 interface AlertsByRiskData {
   name: string;
