@@ -1,33 +1,11 @@
-import { 
-  Users, 
-  ArrowLeftRight, 
-  AlertTriangle, 
-  TrendingUp,
-  ShieldAlert,
-  Clock,
-  DollarSign,
-  UserX
-} from 'lucide-react';
 import { useDataStore } from '@/store/dataStore';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageHeader } from '@/components/ui/page-header';
-import { StatCard } from '@/components/ui/stat-card';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
-  Legend
-} from 'recharts';
+import { StatsSection } from '@/components/dashboard/StatsSection';
+import { TransactionVolumeChart } from '@/components/dashboard/TransactionVolumeChart';
+import { RiskDistributionChart } from '@/components/dashboard/RiskDistributionChart';
+import { RecentAlertsSection } from '@/components/dashboard/RecentAlertsSection';
+import { AlertStatusChart } from '@/components/dashboard/AlertStatusChart';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
