@@ -10,6 +10,7 @@ import Clients from "./pages/Clients";
 import Transactions from "./pages/Transactions";
 import Alerts from "./pages/Alerts";
 import Reports from "./pages/Reports";
+import StyleGuide from "./pages/StyleGuide";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
           <Route path="/alerts" element={<ProtectedRoute><Alerts /></ProtectedRoute>} />
           <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+          <Route path="/style-guide" element={<ProtectedRoute><StyleGuide /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

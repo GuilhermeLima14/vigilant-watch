@@ -29,6 +29,7 @@ const menuItems = [
   { title: 'Transações', url: '/transactions', icon: ArrowLeftRight },
   { title: 'Alertas', url: '/alerts', icon: AlertTriangle },
   { title: 'Relatórios', url: '/reports', icon: FileBarChart },
+  { title: 'Style Guide', url: '/style-guide', icon: Shield },
 ];
 
 export function AppSidebar() {
