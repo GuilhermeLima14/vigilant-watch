@@ -1,32 +1,15 @@
 import { useState } from 'react';
-import { Download, FileText, BarChart3 } from 'lucide-react';
+import { Download, FileText } from 'lucide-react';
 import { useDataStore } from '@/store/dataStore';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { PageHeader } from '@/components/ui/page-header';
-import { StatusBadge } from '@/components/ui/status-badge';
 import { Button } from '@/components/ui/button';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  Legend
-} from 'recharts';
+import { ReportsFilterSection } from '@/components/reports/ReportsFilterSection';
+import { ReportsSummaryCards } from '@/components/reports/ReportsSummaryCards';
+import { VolumeByClientChart } from '@/components/reports/VolumeByClientChart';
+import { AlertsByRiskChart } from '@/components/reports/AlertsByRiskChart';
+import { ReportsDetailTable } from '@/components/reports/ReportsDetailTable';
 import { useToast } from '@/hooks/use-toast';
-import type { ClientReport } from '@/types';
 
 const COLORS = {
   primary: 'hsl(217, 91%, 60%)',
