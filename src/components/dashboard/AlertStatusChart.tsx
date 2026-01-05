@@ -42,13 +42,7 @@ export function AlertStatusChart({ data }: AlertStatusChartProps) {
                 <Cell key={`alert-status-cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip
-              contentStyle={{
-                backgroundColor: 'hsl(222, 47%, 8%)',
-                border: '1px solid hsl(217, 33%, 17%)',
-                borderRadius: '8px',
-              }}
-            />
+            <Tooltip contentStyle={getTooltipStyle()} />
           </PieChart>
         </ResponsiveContainer>
       </div>
