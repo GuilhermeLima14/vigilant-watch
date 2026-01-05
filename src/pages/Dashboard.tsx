@@ -56,168 +56,32 @@ export default function Dashboard() {
 
   return (
     <AppLayout>
-      <PageHeader 
-        title="Dashboard" 
+      <PageHeader
+        title="Dashboard"
         description={`Visão geral do sistema • ${format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR })}`}
       />
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
-        <StatCard
-          title="Total de Clientes"
-          value={stats.totalClients}
-          subtitle={`${stats.highRiskClients} de alto risco`}
-          icon={Users}
-          variant="primary"
+      <StatsSection
+        totalClients={stats.totalClients}
+        highRiskClients={stats.highRiskClients}
+        transactionsToday={transactions.length}
+        transactionVolume={formatCurrency(stats.transactionVolumeToday)}
+        activeAlerts={stats.activeAlerts}
+        criticalAlerts={stats.criticalAlerts}
+        pendingKYC={stats.pendingKYC}
+      />
+
+      <div className="dashboard-charts-row grid gap-6 lg:grid-cols-3 mb-8">
+        <TransactionVolumeChart
+          data={transactionsByType}
+          formatCurrency={formatCurrency}
         />
-        <StatCard
-          title="Transações Hoje"
-          value={transactions.length}
-          subtitle={formatCurrency(stats.transactionVolumeToday)}
-          icon={ArrowLeftRight}
-          variant="default"
-        />
-        <StatCard
-          title="Alertas Ativos"
-          value={stats.activeAlerts}
-          subtitle={`${stats.criticalAlerts} crítico(s)`}
-          icon={AlertTriangle}
-          variant={stats.criticalAlerts > 0 ? 'destructive' : 'warning'}
-        />
-        <StatCard
-          title="KYC Pendente"
-          value={stats.pendingKYC}
-          subtitle="Requer atenção"
-          icon={UserX}
-          variant={stats.pendingKYC > 0 ? 'warning' : 'success'}
-        />
+        <RiskDistributionChart data={riskDistribution} />
       </div>
 
-      {/* Charts Row */}
-      <div className="grid gap-6 lg:grid-cols-3 mb-8">
-        {/* Volume por Tipo */}
-        <div className="glass rounded-xl p-6 border border-border lg:col-span-2">
-          <h3 className="text-lg font-semibold mb-4">Volume por Tipo de Transação</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={transactionsByType}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 17%)" />
-              <XAxis dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={12} />
-              <YAxis stroke="hsl(215, 20%, 55%)" fontSize={12} tickFormatter={(v) => formatCurrency(v)} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
-                }}
-                formatter={(value: number) => formatCurrency(value)}
-              />
-              <Bar dataKey="value" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Distribuição de Risco */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <h3 className="text-lg font-semibold mb-4">Distribuição de Risco</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <PieChart>
-              <Pie
-                data={riskDistribution}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={4}
-                dataKey="value"
-              >
-                {riskDistribution.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
-                }}
-              />
-              <Legend 
-                verticalAlign="bottom" 
-                height={36}
-                formatter={(value) => <span className="text-foreground text-sm">{value}</span>}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Alerts and Status */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Recent Alerts */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Alertas Recentes</h3>
-            <ShieldAlert className="h-5 w-5 text-warning" />
-          </div>
-          <div className="space-y-3">
-            {recentAlerts.length === 0 ? (
-              <p className="text-muted-foreground text-sm py-4 text-center">
-                Nenhum alerta pendente
-              </p>
-            ) : (
-              recentAlerts.map((alert) => (
-                <div
-                  key={alert.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">{alert.clientName}</p>
-                    <p className="text-xs text-muted-foreground truncate max-w-[200px]">
-                      {alert.ruleDescription}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <StatusBadge type={alert.severity} />
-                    <StatusBadge type={alert.status} />
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Alert Status Distribution */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Status dos Alertas</h3>
-            <Clock className="h-5 w-5 text-primary" />
-          </div>
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart>
-              <Pie
-                data={alertsByStatus}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                paddingAngle={2}
-                dataKey="value"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                labelLine={false}
-              >
-                {alertsByStatus.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
-                }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+      <div className="dashboard-alerts-row grid gap-6 lg:grid-cols-2">
+        <RecentAlertsSection alerts={recentAlerts} />
+        <AlertStatusChart data={alertsByStatus} />
       </div>
     </AppLayout>
   );
