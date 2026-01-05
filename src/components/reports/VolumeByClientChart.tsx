@@ -51,11 +51,7 @@ export function VolumeByClientChart({
               width={120}
             />
             <Tooltip
-              contentStyle={{
-                backgroundColor: 'hsl(222, 47%, 8%)',
-                border: '1px solid hsl(217, 33%, 17%)',
-                borderRadius: '8px',
-              }}
+              contentStyle={getTooltipStyle()}
               formatter={(value: number) => formatCurrency(value)}
             />
             <Bar dataKey="volume" fill={CHART_COLORS.primary} radius={[0, 4, 4, 0]} />
