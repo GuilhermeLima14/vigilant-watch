@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import { getTooltipStyle } from '@/lib/theme-colors';
 
 interface TransactionData {
   name: string;
