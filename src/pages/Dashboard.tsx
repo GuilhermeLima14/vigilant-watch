@@ -122,15 +122,17 @@ export default function Dashboard() {
           <h3 className="text-lg font-semibold mb-4">Volume por Tipo de Transação</h3>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={transactionsByType}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 17%)" />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 20%, 88%)" />
               <XAxis dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={12} />
               <YAxis stroke="hsl(215, 20%, 55%)" fontSize={12} tickFormatter={(v) => formatCurrency(v)} />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
+                  backgroundColor: 'hsl(0, 0%, 100%)', 
+                  border: '1px solid hsl(217, 20%, 88%)',
+                  borderRadius: '8px',
+                  color: 'hsl(222, 47%, 11%)'
                 }}
+                labelStyle={{ color: 'hsl(222, 47%, 11%)' }}
                 formatter={(value: number) => formatCurrency(value)}
               />
               <Bar dataKey="value" fill={COLORS.primary} radius={[4, 4, 0, 0]} />
@@ -158,10 +160,12 @@ export default function Dashboard() {
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
+                  backgroundColor: 'hsl(0, 0%, 100%)', 
+                  border: '1px solid hsl(217, 20%, 88%)',
+                  borderRadius: '8px',
+                  color: 'hsl(222, 47%, 11%)'
                 }}
+                labelStyle={{ color: 'hsl(222, 47%, 11%)' }}
               />
               <Legend 
                 verticalAlign="bottom" 
@@ -232,10 +236,12 @@ export default function Dashboard() {
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
+                  backgroundColor: 'hsl(0, 0%, 100%)', 
+                  border: '1px solid hsl(217, 20%, 88%)',
+                  borderRadius: '8px',
+                  color: 'hsl(222, 47%, 11%)'
                 }}
+                labelStyle={{ color: 'hsl(222, 47%, 11%)' }}
               />
             </PieChart>
           </ResponsiveContainer>
