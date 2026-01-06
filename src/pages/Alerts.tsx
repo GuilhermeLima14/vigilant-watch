@@ -120,39 +120,39 @@ export default function Alerts() {
       <PageHeader title="Alertas" description="Monitoramento de alertas de compliance" />
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="glass rounded-lg p-4 border border-border">
-          <div className="flex items-center gap-3">
-            <AlertTriangle className="h-5 w-5 text-info" />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+        <div className="glass rounded-lg p-3 border border-border">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-info" />
             <div>
-              <p className="text-2xl font-bold">{stats.new}</p>
+              <p className="text-xl font-bold">{stats.new}</p>
               <p className="text-xs text-muted-foreground">Novos</p>
             </div>
           </div>
         </div>
-        <div className="glass rounded-lg p-4 border border-border">
-          <div className="flex items-center gap-3">
-            <Clock className="h-5 w-5 text-warning" />
+        <div className="glass rounded-lg p-3 border border-border">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-warning" />
             <div>
-              <p className="text-2xl font-bold">{stats.underReview}</p>
+              <p className="text-xl font-bold">{stats.underReview}</p>
               <p className="text-xs text-muted-foreground">Em Análise</p>
             </div>
           </div>
         </div>
-        <div className="glass rounded-lg p-4 border border-border">
-          <div className="flex items-center gap-3">
-            <CheckCircle className="h-5 w-5 text-success" />
+        <div className="glass rounded-lg p-3 border border-border">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-success" />
             <div>
-              <p className="text-2xl font-bold">{stats.resolved}</p>
+              <p className="text-xl font-bold">{stats.resolved}</p>
               <p className="text-xs text-muted-foreground">Resolvidos</p>
             </div>
           </div>
         </div>
-        <div className="glass rounded-lg p-4 border border-destructive/30 bg-destructive/5">
-          <div className="flex items-center gap-3">
-            <AlertTriangle className="h-5 w-5 text-destructive" />
+        <div className="glass rounded-lg p-3 border border-destructive/30 bg-destructive/5">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="h-4 w-4 text-destructive" />
             <div>
-              <p className="text-2xl font-bold text-destructive">{stats.critical}</p>
+              <p className="text-xl font-bold text-destructive">{stats.critical}</p>
               <p className="text-xs text-muted-foreground">Críticos</p>
             </div>
           </div>
@@ -160,20 +160,20 @@ export default function Alerts() {
       </div>
 
       {/* Filters */}
-      <div className="glass rounded-xl p-4 border border-border mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="glass rounded-lg p-3 border border-border mb-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Buscar por cliente ou descrição..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 bg-muted/50"
+              className="pl-10 bg-muted/50 h-9 text-sm"
             />
           </div>
           
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
+            <SelectTrigger className="w-full sm:w-[140px] bg-muted/50 h-9 text-sm">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent>
@@ -186,7 +186,7 @@ export default function Alerts() {
           </Select>
           
           <Select value={severityFilter} onValueChange={setSeverityFilter}>
-            <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
+            <SelectTrigger className="w-full sm:w-[140px] bg-muted/50 h-9 text-sm">
               <SelectValue placeholder="Severidade" />
             </SelectTrigger>
             <SelectContent>
@@ -201,36 +201,36 @@ export default function Alerts() {
       </div>
 
       {/* Alerts List */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         {filteredAlerts.length === 0 ? (
-          <div className="glass rounded-xl p-8 border border-border text-center">
-            <p className="text-muted-foreground">Nenhum alerta encontrado</p>
+          <div className="glass rounded-lg p-6 border border-border text-center">
+            <p className="text-muted-foreground text-sm">Nenhum alerta encontrado</p>
           </div>
         ) : (
           filteredAlerts.map((alert) => (
             <div
               key={alert.id}
-              className={`glass rounded-xl p-4 border border-border border-l-4 ${getSeverityColor(alert.severity)} hover:bg-muted/30 transition-colors cursor-pointer`}
+              className={`glass rounded-lg p-3 border border-border border-l-4 ${getSeverityColor(alert.severity)} hover:bg-muted/30 transition-colors cursor-pointer`}
               onClick={() => handleViewAlert(alert)}
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-1">
                     {getStatusIcon(alert.status)}
-                    <span className="font-medium text-foreground">{alert.clientName}</span>
+                    <span className="font-medium text-sm text-foreground">{alert.clientName}</span>
                     <span className="text-muted-foreground">•</span>
-                    <span className="text-sm text-muted-foreground">{alert.ruleCode}</span>
+                    <span className="text-xs text-muted-foreground">{alert.ruleCode}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">{alert.ruleDescription}</p>
-                  <p className="text-xs text-muted-foreground mt-2">
+                  <p className="text-xs text-muted-foreground">{alert.ruleDescription}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
                     {format(alert.createdAt, 'dd/MM/yyyy HH:mm')}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                   <StatusBadge type={alert.severity} />
                   <StatusBadge type={alert.status} />
-                  <Button variant="ghost" size="icon">
-                    <Eye className="h-4 w-4" />
+                  <Button variant="ghost" size="icon" className="h-7 w-7">
+                    <Eye className="h-3.5 w-3.5" />
                   </Button>
                 </div>
               </div>

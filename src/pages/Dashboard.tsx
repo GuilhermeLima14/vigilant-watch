@@ -84,7 +84,7 @@ export default function Dashboard() {
       />
 
       {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4 mb-4">
         <StatCard
           title="Total de Clientes"
           value={stats.totalClients}
@@ -116,15 +116,15 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid gap-6 lg:grid-cols-3 mb-8">
+      <div className="grid gap-3 lg:grid-cols-3 mb-4">
         {/* Volume por Tipo */}
-        <div className="glass rounded-xl p-6 border border-border lg:col-span-2">
-          <h3 className="text-lg font-semibold mb-4">Volume por Tipo de Transação</h3>
-          <ResponsiveContainer width="100%" height={280}>
+        <div className="glass rounded-lg p-4 border border-border lg:col-span-2">
+          <h3 className="text-sm font-semibold mb-2">Volume por Tipo de Transação</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={transactionsByType}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 20%, 88%)" />
-              <XAxis dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={12} />
-              <YAxis stroke="hsl(215, 20%, 55%)" fontSize={12} tickFormatter={(v) => formatCurrency(v)} />
+              <XAxis dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={11} />
+              <YAxis stroke="hsl(215, 20%, 55%)" fontSize={11} tickFormatter={(v) => formatCurrency(v)} />
               <Tooltip 
                 contentStyle={{ 
                   backgroundColor: 'hsl(0, 0%, 100%)', 
@@ -141,16 +141,16 @@ export default function Dashboard() {
         </div>
 
         {/* Distribuição de Risco */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <h3 className="text-lg font-semibold mb-4">Distribuição de Risco</h3>
-          <ResponsiveContainer width="100%" height={280}>
+        <div className="glass rounded-lg p-4 border border-border">
+          <h3 className="text-sm font-semibold mb-2">Distribuição de Risco</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
                 data={riskDistribution}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={90}
+                innerRadius={45}
+                outerRadius={70}
                 paddingAngle={4}
                 dataKey="value"
               >
@@ -169,8 +169,8 @@ export default function Dashboard() {
               />
               <Legend 
                 verticalAlign="bottom" 
-                height={36}
-                formatter={(value) => <span className="text-foreground text-sm">{value}</span>}
+                height={28}
+                formatter={(value) => <span className="text-foreground text-xs">{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -178,31 +178,31 @@ export default function Dashboard() {
       </div>
 
       {/* Alerts and Status */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-3 lg:grid-cols-2">
         {/* Recent Alerts */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Alertas Recentes</h3>
-            <ShieldAlert className="h-5 w-5 text-warning" />
+        <div className="glass rounded-lg p-4 border border-border">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold">Alertas Recentes</h3>
+            <ShieldAlert className="h-4 w-4 text-warning" />
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2">
             {recentAlerts.length === 0 ? (
-              <p className="text-muted-foreground text-sm py-4 text-center">
+              <p className="text-muted-foreground text-xs py-3 text-center">
                 Nenhum alerta pendente
               </p>
             ) : (
               recentAlerts.map((alert) => (
                 <div
                   key={alert.id}
-                  className="flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                  className="flex items-center justify-between p-2 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">{alert.clientName}</p>
+                    <p className="text-xs font-medium text-foreground">{alert.clientName}</p>
                     <p className="text-xs text-muted-foreground truncate max-w-[200px]">
                       {alert.ruleDescription}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <StatusBadge type={alert.severity} />
                     <StatusBadge type={alert.status} />
                   </div>
@@ -213,18 +213,18 @@ export default function Dashboard() {
         </div>
 
         {/* Alert Status Distribution */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Status dos Alertas</h3>
-            <Clock className="h-5 w-5 text-primary" />
+        <div className="glass rounded-lg p-4 border border-border">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold">Status dos Alertas</h3>
+            <Clock className="h-4 w-4 text-primary" />
           </div>
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="100%" height={180}>
             <PieChart>
               <Pie
                 data={alertsByStatus}
                 cx="50%"
                 cy="50%"
-                outerRadius={80}
+                outerRadius={60}
                 paddingAngle={2}
                 dataKey="value"
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
