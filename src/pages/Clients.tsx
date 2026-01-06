@@ -175,20 +175,20 @@ export default function Clients() {
       </PageHeader>
 
       {/* Filters */}
-      <div className="glass rounded-xl p-4 border border-border mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="glass rounded-lg p-3 border border-border mb-3">
+        <div className="flex flex-col sm:flex-row gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Buscar por nome ou país..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-10 bg-muted/50"
+              className="pl-10 bg-muted/50 h-9 text-sm"
             />
           </div>
           
           <Select value={riskFilter} onValueChange={setRiskFilter}>
-            <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
+            <SelectTrigger className="w-full sm:w-[140px] bg-muted/50 h-9 text-sm">
               <SelectValue placeholder="Risco" />
             </SelectTrigger>
             <SelectContent>
@@ -201,7 +201,7 @@ export default function Clients() {
           </Select>
           
           <Select value={kycFilter} onValueChange={setKycFilter}>
-            <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
+            <SelectTrigger className="w-full sm:w-[140px] bg-muted/50 h-9 text-sm">
               <SelectValue placeholder="Status KYC" />
             </SelectTrigger>
             <SelectContent>
@@ -216,7 +216,7 @@ export default function Clients() {
       </div>
 
       {/* Table */}
-      <div className="glass rounded-xl border border-border overflow-hidden">
+      <div className="glass rounded-lg border border-border overflow-hidden">
         <div className="overflow-x-auto">
           <table className="data-table">
             <thead>

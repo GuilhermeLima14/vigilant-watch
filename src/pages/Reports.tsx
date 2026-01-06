@@ -139,11 +139,11 @@ export default function Reports() {
       </PageHeader>
 
       {/* Filter */}
-      <div className="glass rounded-xl p-4 border border-border mb-6">
-        <div className="flex items-center gap-4">
-          <BarChart3 className="h-5 w-5 text-muted-foreground" />
+      <div className="glass rounded-lg p-3 border border-border mb-3">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="h-4 w-4 text-muted-foreground" />
           <Select value={clientFilter} onValueChange={setClientFilter}>
-            <SelectTrigger className="w-full sm:w-[300px] bg-muted/50">
+            <SelectTrigger className="w-full sm:w-[280px] bg-muted/50 h-9 text-sm">
               <SelectValue placeholder="Selecione um cliente" />
             </SelectTrigger>
             <SelectContent>
@@ -159,41 +159,43 @@ export default function Reports() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="glass rounded-xl p-4 border border-border">
-          <p className="text-sm text-muted-foreground">Clientes</p>
-          <p className="text-2xl font-bold">{totals.clients}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+        <div className="glass rounded-lg p-3 border border-border">
+          <p className="text-xs text-muted-foreground">Clientes</p>
+          <p className="text-xl font-bold">{totals.clients}</p>
         </div>
-        <div className="glass rounded-xl p-4 border border-border">
-          <p className="text-sm text-muted-foreground">Transações</p>
-          <p className="text-2xl font-bold">{totals.transactions}</p>
+        <div className="glass rounded-lg p-3 border border-border">
+          <p className="text-xs text-muted-foreground">Transações</p>
+          <p className="text-xl font-bold">{totals.transactions}</p>
         </div>
-        <div className="glass rounded-xl p-4 border border-border">
-          <p className="text-sm text-muted-foreground">Volume Total</p>
-          <p className="text-2xl font-bold">{formatCurrency(totals.volume)}</p>
+        <div className="glass rounded-lg p-3 border border-border">
+          <p className="text-xs text-muted-foreground">Volume Total</p>
+          <p className="text-xl font-bold">{formatCurrency(totals.volume)}</p>
         </div>
-        <div className="glass rounded-xl p-4 border border-border">
-          <p className="text-sm text-muted-foreground">Alertas</p>
-          <p className="text-2xl font-bold">{totals.alerts}</p>
+        <div className="glass rounded-lg p-3 border border-border">
+          <p className="text-xs text-muted-foreground">Alertas</p>
+          <p className="text-xl font-bold">{totals.alerts}</p>
         </div>
       </div>
 
       {/* Charts */}
-      <div className="grid gap-6 lg:grid-cols-3 mb-8">
+      <div className="grid gap-3 lg:grid-cols-3 mb-4">
         {/* Volume por Cliente */}
-        <div className="glass rounded-xl p-6 border border-border lg:col-span-2">
-          <h3 className="text-lg font-semibold mb-4">Volume por Cliente</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="glass rounded-lg p-4 border border-border lg:col-span-2">
+          <h3 className="text-sm font-semibold mb-2">Volume por Cliente</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <BarChart data={volumeByClient} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 17%)" />
-              <XAxis type="number" stroke="hsl(215, 20%, 55%)" fontSize={12} tickFormatter={(v) => formatCurrency(v)} />
-              <YAxis type="category" dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={11} width={120} />
+              <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 20%, 88%)" />
+              <XAxis type="number" stroke="hsl(215, 20%, 55%)" fontSize={11} tickFormatter={(v) => formatCurrency(v)} />
+              <YAxis type="category" dataKey="name" stroke="hsl(215, 20%, 55%)" fontSize={10} width={100} />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
+                  backgroundColor: 'hsl(0, 0%, 100%)', 
+                  border: '1px solid hsl(217, 20%, 88%)',
+                  borderRadius: '8px',
+                  color: 'hsl(222, 47%, 11%)'
                 }}
+                labelStyle={{ color: 'hsl(222, 47%, 11%)' }}
                 formatter={(value: number) => formatCurrency(value)}
               />
               <Bar dataKey="volume" fill={COLORS.primary} radius={[0, 4, 4, 0]} />
@@ -202,16 +204,16 @@ export default function Reports() {
         </div>
 
         {/* Alertas por Risco */}
-        <div className="glass rounded-xl p-6 border border-border">
-          <h3 className="text-lg font-semibold mb-4">Alertas por Nível de Risco</h3>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="glass rounded-lg p-4 border border-border">
+          <h3 className="text-sm font-semibold mb-2">Alertas por Nível de Risco</h3>
+          <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
                 data={alertsByRisk}
                 cx="50%"
                 cy="50%"
-                innerRadius={50}
-                outerRadius={80}
+                innerRadius={40}
+                outerRadius={65}
                 paddingAngle={4}
                 dataKey="value"
               >
@@ -221,15 +223,17 @@ export default function Reports() {
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: 'hsl(222, 47%, 8%)', 
-                  border: '1px solid hsl(217, 33%, 17%)',
-                  borderRadius: '8px'
+                  backgroundColor: 'hsl(0, 0%, 100%)', 
+                  border: '1px solid hsl(217, 20%, 88%)',
+                  borderRadius: '8px',
+                  color: 'hsl(222, 47%, 11%)'
                 }}
+                labelStyle={{ color: 'hsl(222, 47%, 11%)' }}
               />
               <Legend 
                 verticalAlign="bottom" 
-                height={36}
-                formatter={(value) => <span className="text-foreground text-sm">{value}</span>}
+                height={28}
+                formatter={(value) => <span className="text-foreground text-xs">{value}</span>}
               />
             </PieChart>
           </ResponsiveContainer>
@@ -237,9 +241,9 @@ export default function Reports() {
       </div>
 
       {/* Detail Table */}
-      <div className="glass rounded-xl border border-border overflow-hidden">
-        <div className="p-4 border-b border-border">
-          <h3 className="text-lg font-semibold">Detalhamento por Cliente</h3>
+      <div className="glass rounded-lg border border-border overflow-hidden">
+        <div className="p-3 border-b border-border">
+          <h3 className="text-sm font-semibold">Detalhamento por Cliente</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="data-table">
