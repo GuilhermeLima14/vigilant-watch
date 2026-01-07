@@ -1,4 +1,5 @@
 import { MoreHorizontal, Eye, Edit } from 'lucide-react';
+import { DataTable, Column } from '@/components/shared/DataTable';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,70 +24,71 @@ function getFlagEmoji(countryCode: string): string {
 }
 
 export function ClientsTable({ clients }: ClientsTableProps) {
+  const columns: Column<Client>[] = [
+    {
+      header: 'Cliente',
+      accessor: (client) => (
+        <div>
+          <div className="font-medium text-foreground">{client.name}</div>
+          <div className="text-xs text-muted-foreground">ID: {client.id}</div>
+        </div>
+      ),
+    },
+    {
+      header: 'País',
+      accessor: (client) => (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="text-lg">{getFlagEmoji(client.country)}</span>
+          <span>{client.country}</span>
+        </span>
+      ),
+    },
+    {
+      header: 'Nível de Risco',
+      accessor: (client) => <StatusBadge type={client.riskLevel} />,
+    },
+    {
+      header: 'Status KYC',
+      accessor: (client) => <StatusBadge type={client.kycStatus} />,
+    },
+    {
+      header: 'Criado em',
+      accessor: (client) => (
+        <span className="text-muted-foreground text-sm">
+          {format(client.createdAt, 'dd/MM/yyyy')}
+        </span>
+      ),
+    },
+    {
+      header: 'Ações',
+      align: 'right',
+      accessor: (client) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem>
+              <Eye className="h-4 w-4 mr-2" />
+              Visualizar
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Edit className="h-4 w-4 mr-2" />
+              Editar
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
+
   return (
-    <div className="glass rounded-xl border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="data-table">
-          <thead>
-            <tr className="bg-muted/30">
-              <th>Cliente</th>
-              <th>País</th>
-              <th>Nível de Risco</th>
-              <th>Status KYC</th>
-              <th>Criado em</th>
-              <th className="text-right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {clients.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="text-center py-8 text-muted-foreground">
-                  Nenhum cliente encontrado
-                </td>
-              </tr>
-            ) : (
-              clients.map((client) => (
-                <tr key={client.id} className="transition-colors">
-                  <td>
-                    <div className="font-medium text-foreground">{client.name}</div>
-                    <div className="text-xs text-muted-foreground">ID: {client.id}</div>
-                  </td>
-                  <td>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="text-lg">{getFlagEmoji(client.country)}</span>
-                      <span>{client.country}</span>
-                    </span>
-                  </td>
-                  <td><StatusBadge type={client.riskLevel} /></td>
-                  <td><StatusBadge type={client.kycStatus} /></td>
-                  <td className="text-muted-foreground text-sm">
-                    {format(client.createdAt, 'dd/MM/yyyy')}
-                  </td>
-                  <td className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Eye className="h-4 w-4 mr-2" />
-                          Visualizar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Editar
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <DataTable 
+      data={clients} 
+      columns={columns} 
+      emptyMessage="Nenhum cliente encontrado"
+    />
   );
 }

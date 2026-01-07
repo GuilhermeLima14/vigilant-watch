@@ -1,4 +1,5 @@
 import { ArrowUpRight, ArrowDownRight, ArrowLeftRight as ArrowTransfer } from 'lucide-react';
+import { DataTable, Column } from '@/components/shared/DataTable';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { format } from 'date-fns';
 import type { Transaction, TransactionType } from '@/types';
@@ -35,63 +36,63 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
     }).format(value);
   };
 
+  const columns: Column<Transaction>[] = [
+    {
+      header: 'Tipo',
+      accessor: (transaction) => (
+        <div className="flex items-center gap-2">
+          {getTypeIcon(transaction.type)}
+          <StatusBadge type={transaction.type} />
+        </div>
+      ),
+    },
+    {
+      header: 'Cliente',
+      accessor: (transaction) => (
+        <div className="font-medium text-foreground">{transaction.clientName}</div>
+      ),
+    },
+    {
+      header: 'Valor',
+      accessor: (transaction) => (
+        <span className={`font-mono font-medium ${
+          transaction.type === 'WITHDRAWAL' ? 'text-destructive' : 
+          transaction.type === 'DEPOSIT' ? 'text-success' : 'text-foreground'
+        }`}>
+          {formatCurrency(transaction.amount, transaction.currency)}
+        </span>
+      ),
+    },
+    {
+      header: 'Contraparte',
+      accessor: (transaction) => (
+        <span className="text-muted-foreground">{transaction.counterparty}</span>
+      ),
+    },
+    {
+      header: 'País',
+      accessor: (transaction) => (
+        <span className="inline-flex items-center gap-1.5">
+          <span className="text-lg">{getFlagEmoji(transaction.counterpartyCountry)}</span>
+          <span className="text-muted-foreground">{transaction.counterpartyCountry}</span>
+        </span>
+      ),
+    },
+    {
+      header: 'Data',
+      accessor: (transaction) => (
+        <span className="text-muted-foreground text-sm">
+          {format(transaction.transactionDate, 'dd/MM/yyyy HH:mm')}
+        </span>
+      ),
+    },
+  ];
+
   return (
-    <div className="glass rounded-xl border border-border overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="data-table">
-          <thead>
-            <tr className="bg-muted/30">
-              <th>Tipo</th>
-              <th>Cliente</th>
-              <th>Valor</th>
-              <th>Contraparte</th>
-              <th>País</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="text-center py-8 text-muted-foreground">
-                  Nenhuma transação encontrada
-                </td>
-              </tr>
-            ) : (
-              transactions.map((transaction) => (
-                <tr key={transaction.id} className="transition-colors">
-                  <td>
-                    <div className="flex items-center gap-2">
-                      {getTypeIcon(transaction.type)}
-                      <StatusBadge type={transaction.type} />
-                    </div>
-                  </td>
-                  <td>
-                    <div className="font-medium text-foreground">{transaction.clientName}</div>
-                  </td>
-                  <td>
-                    <span className={`font-mono font-medium ${
-                      transaction.type === 'WITHDRAWAL' ? 'text-destructive' : 
-                      transaction.type === 'DEPOSIT' ? 'text-success' : 'text-foreground'
-                    }`}>
-                      {formatCurrency(transaction.amount, transaction.currency)}
-                    </span>
-                  </td>
-                  <td className="text-muted-foreground">{transaction.counterparty}</td>
-                  <td>
-                    <span className="inline-flex items-center gap-1.5">
-                      <span className="text-lg">{getFlagEmoji(transaction.counterpartyCountry)}</span>
-                      <span className="text-muted-foreground">{transaction.counterpartyCountry}</span>
-                    </span>
-                  </td>
-                  <td className="text-muted-foreground text-sm">
-                    {format(transaction.transactionDate, 'dd/MM/yyyy HH:mm')}
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <DataTable 
+      data={transactions} 
+      columns={columns} 
+      emptyMessage="Nenhuma transação encontrada"
+    />
   );
 }

@@ -1,12 +1,4 @@
-import { Search } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { DataFilters, Filter } from '@/components/shared/DataFilters';
 
 interface AlertsFiltersProps {
   search: string;
@@ -25,45 +17,40 @@ export function AlertsFilters({
   severityFilter,
   onSeverityFilterChange,
 }: AlertsFiltersProps) {
-  return (
-    <div className="glass rounded-xl p-4 border border-border mb-6">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por cliente ou descrição..."
-            value={search}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-10 bg-muted/50"
-          />
-        </div>
-        
-        <Select value={statusFilter} onValueChange={onStatusFilterChange}>
-          <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os Status</SelectItem>
-            <SelectItem value="NEW">Novo</SelectItem>
-            <SelectItem value="UNDER_REVIEW">Em Análise</SelectItem>
-            <SelectItem value="RESOLVED">Resolvido</SelectItem>
-            <SelectItem value="DISMISSED">Descartado</SelectItem>
-          </SelectContent>
-        </Select>
-        
-        <Select value={severityFilter} onValueChange={onSeverityFilterChange}>
-          <SelectTrigger className="w-full sm:w-[160px] bg-muted/50">
-            <SelectValue placeholder="Severidade" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todas</SelectItem>
-            <SelectItem value="LOW">Baixa</SelectItem>
-            <SelectItem value="MEDIUM">Média</SelectItem>
-            <SelectItem value="HIGH">Alta</SelectItem>
-            <SelectItem value="CRITICAL">Crítica</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
-  );
+  const filters: Filter[] = [
+    {
+      type: 'search',
+      value: search,
+      onChange: onSearchChange,
+      placeholder: 'Buscar por cliente ou descrição...',
+    },
+    {
+      type: 'select',
+      value: statusFilter,
+      onChange: onStatusFilterChange,
+      placeholder: 'Status',
+      options: [
+        { value: 'all', label: 'Todos os Status' },
+        { value: 'NEW', label: 'Novo' },
+        { value: 'UNDER_REVIEW', label: 'Em Análise' },
+        { value: 'RESOLVED', label: 'Resolvido' },
+        { value: 'DISMISSED', label: 'Descartado' },
+      ],
+    },
+    {
+      type: 'select',
+      value: severityFilter,
+      onChange: onSeverityFilterChange,
+      placeholder: 'Severidade',
+      options: [
+        { value: 'all', label: 'Todas' },
+        { value: 'LOW', label: 'Baixa' },
+        { value: 'MEDIUM', label: 'Média' },
+        { value: 'HIGH', label: 'Alta' },
+        { value: 'CRITICAL', label: 'Crítica' },
+      ],
+    },
+  ];
+
+  return <DataFilters filters={filters} />;
 }
