@@ -1,6 +1,15 @@
 import { DataTable, Column } from '@/components/shared/DataTable';
 import { StatusBadge } from '@/components/ui/status-badge';
-import type { ClientReport } from '@/types';
+import { RiskLevel } from '@/types/api';
+
+interface ClientReport {
+  clientId: string;
+  clientName: string;
+  totalTransactions: number;
+  totalVolume: number;
+  alertCount: number;
+  riskLevel: RiskLevel;
+}
 
 interface ClientReportsTableProps {
   reports: ClientReport[];

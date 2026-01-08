@@ -1,6 +1,21 @@
 import { Clock } from 'lucide-react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import type { Alert } from '@/types';
+import { AlertStatus, AlertSeverity } from '@/types/api';
+
+interface Alert {
+  id: number;
+  clientId: number;
+  clientName?: string;
+  transactionId: number;
+  ruleCode: number;
+  ruleDescription: string;
+  severity: AlertSeverity;
+  status: AlertStatus;
+  resolutionNotes?: string;
+  resolvedBy?: string;
+  createdAt: Date;
+  resolvedAt?: Date;
+}
 
 interface AlertStatusChartProps {
   alerts: Alert[];
@@ -10,30 +25,24 @@ const COLORS = {
   primary: 'hsl(217, 91%, 60%)',
   warning: 'hsl(38, 92%, 50%)',
   success: 'hsl(142, 71%, 45%)',
-  muted: '#6b7280',
 };
 
 export function AlertStatusChart({ alerts }: AlertStatusChartProps) {
   const alertsByStatus = [
     { 
       name: 'Novos', 
-      value: alerts.filter(a => a.status === 'NEW').length, 
+      value: alerts.filter(a => a.status === AlertStatus.New).length, 
       color: COLORS.primary 
     },
     { 
       name: 'Em Análise', 
-      value: alerts.filter(a => a.status === 'UNDER_REVIEW').length, 
+      value: alerts.filter(a => a.status === AlertStatus.Review).length, 
       color: COLORS.warning 
     },
     { 
       name: 'Resolvidos', 
-      value: alerts.filter(a => a.status === 'RESOLVED').length, 
+      value: alerts.filter(a => a.status === AlertStatus.Resolved).length, 
       color: COLORS.success 
-    },
-    { 
-      name: 'Descartados', 
-      value: alerts.filter(a => a.status === 'DISMISSED').length, 
-      color: COLORS.muted 
     },
   ];
 

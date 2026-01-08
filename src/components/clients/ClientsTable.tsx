@@ -36,24 +36,7 @@ function getFlagEmoji(countryCode: string): string {
   return String.fromCodePoint(...codePoints);
 }
 
-// Mapeia enum numérico para badge type (string)
-function getRiskBadgeType(riskLevel: RiskLevel): string {
-  const mapping: Record<RiskLevel, string> = {
-    [RiskLevel.Low]: 'LOW',
-    [RiskLevel.Medium]: 'MEDIUM',
-    [RiskLevel.High]: 'HIGH',
-  };
-  return mapping[riskLevel] || 'LOW';
-}
-
-function getKycBadgeType(kycStatus: KYCStatus): string {
-  const mapping: Record<KYCStatus, string> = {
-    [KYCStatus.Pending]: 'PENDING',
-    [KYCStatus.Verified]: 'APPROVED',
-    [KYCStatus.Rejected]: 'REJECTED',
-  };
-  return mapping[kycStatus] || 'PENDING';
-}
+// StatusBadge agora aceita enums diretamente!
 
 export function ClientsTable({ clients }: ClientsTableProps) {
   const columns: Column<Client>[] = [
@@ -77,14 +60,14 @@ export function ClientsTable({ clients }: ClientsTableProps) {
         </span>
       ),
     },
-    // {
-    //   header: 'Nível de Risco',
-    //   accessor: (client) => <StatusBadge type={getRiskBadgeType(client.riskLevel) as any} />,
-    // },
-    // {
-    //   header: 'Status KYC',
-    //   accessor: (client) => <StatusBadge type={getKycBadgeType(client.kycStatus) as any} />,
-    // },
+    {
+      header: 'Nível de Risco',
+      accessor: (client) => <StatusBadge type={client.riskLevel} />,
+    },
+    {
+      header: 'Status KYC',
+      accessor: (client) => <StatusBadge type={client.kycStatus} />,
+    },
     {
       header: 'Criado em',
       accessor: (client) => (

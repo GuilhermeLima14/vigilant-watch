@@ -1,5 +1,14 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import type { ClientReport } from '@/types';
+import { RiskLevel } from '@/types/api';
+
+interface ClientReport {
+  clientId: string;
+  clientName: string;
+  totalTransactions: number;
+  totalVolume: number;
+  alertCount: number;
+  riskLevel: RiskLevel;
+}
 
 interface AlertsByRiskChartProps {
   reports: ClientReport[];
@@ -9,7 +18,6 @@ const COLORS = {
   success: 'hsl(142, 71%, 45%)',
   warning: 'hsl(38, 92%, 50%)',
   destructive: 'hsl(0, 84%, 60%)',
-  critical: '#991b1b',
 };
 
 export function AlertsByRiskChart({ reports }: AlertsByRiskChartProps) {
@@ -17,30 +25,23 @@ export function AlertsByRiskChart({ reports }: AlertsByRiskChartProps) {
     { 
       name: 'Baixo', 
       value: reports
-        .filter(r => r.riskLevel === 'LOW')
+        .filter(r => r.riskLevel === RiskLevel.Low)
         .reduce((acc, r) => acc + r.alertCount, 0), 
       color: COLORS.success 
     },
     { 
       name: 'Médio', 
       value: reports
-        .filter(r => r.riskLevel === 'MEDIUM')
+        .filter(r => r.riskLevel === RiskLevel.Medium)
         .reduce((acc, r) => acc + r.alertCount, 0), 
       color: COLORS.warning 
     },
     { 
       name: 'Alto', 
       value: reports
-        .filter(r => r.riskLevel === 'HIGH')
+        .filter(r => r.riskLevel === RiskLevel.High)
         .reduce((acc, r) => acc + r.alertCount, 0), 
       color: COLORS.destructive 
-    },
-    { 
-      name: 'Crítico', 
-      value: reports
-        .filter(r => r.riskLevel === 'CRITICAL')
-        .reduce((acc, r) => acc + r.alertCount, 0), 
-      color: COLORS.critical 
     },
   ];
 

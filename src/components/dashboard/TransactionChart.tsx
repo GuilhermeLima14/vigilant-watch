@@ -1,5 +1,22 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import type { Transaction } from '@/types';
+import { TransactionType } from '@/types/api';
+
+interface Transaction {
+  id: number;
+  externalId: string;
+  clientId: number;
+  clientName?: string;
+  type: TransactionType;
+  amount: {
+    value: number;
+    currencyCode: string;
+  };
+  counterPartyId: number;
+  counterparty: string;
+  counterpartyCountry: string;
+  occurredAt: Date;
+  createdAt: Date;
+}
 
 interface TransactionChartProps {
   transactions: Transaction[];
@@ -23,20 +40,20 @@ export function TransactionChart({ transactions }: TransactionChartProps) {
     { 
       name: 'Depósitos', 
       value: transactions
-        .filter(t => t.type === 'DEPOSIT')
-        .reduce((acc, t) => acc + t.amount, 0) 
+        .filter(t => t.type === TransactionType.Deposit)
+        .reduce((acc, t) => acc + t.amount.value, 0) 
     },
     { 
       name: 'Saques', 
       value: transactions
-        .filter(t => t.type === 'WITHDRAWAL')
-        .reduce((acc, t) => acc + t.amount, 0) 
+        .filter(t => t.type === TransactionType.Withdraw)
+        .reduce((acc, t) => acc + t.amount.value, 0) 
     },
     { 
       name: 'Transferências', 
       value: transactions
-        .filter(t => t.type === 'TRANSFER')
-        .reduce((acc, t) => acc + t.amount, 0) 
+        .filter(t => t.type === TransactionType.Transfer)
+        .reduce((acc, t) => acc + t.amount.value, 0) 
     },
   ];
 

@@ -19,15 +19,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import type { Client, TransactionType } from '@/types';
+import { TransactionType } from '@/types/api';
+
+interface Client {
+  externalId: string;
+  name: string;
+  countryCode: string;
+}
 
 interface AddTransactionDialogProps {
   clients: Client[];
   onAddTransaction: (transaction: {
-    clientId: string;
+    clientId: number;
     type: TransactionType;
-    amount: number;
-    currency: string;
+    amount: { value: number; currencyCode: string };
     counterparty: string;
     counterpartyCountry: string;
   }) => void;
@@ -37,7 +42,7 @@ export function AddTransactionDialog({ clients, onAddTransaction }: AddTransacti
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     clientId: '',
-    type: 'DEPOSIT' as TransactionType,
+    type: TransactionType.Deposit,
     amount: '',
     currency: 'USD',
     counterparty: '',
@@ -50,10 +55,12 @@ export function AddTransactionDialog({ clients, onAddTransaction }: AddTransacti
     }
 
     onAddTransaction({
-      clientId: formData.clientId,
+      clientId: Number(formData.clientId),
       type: formData.type,
-      amount: parseFloat(formData.amount),
-      currency: formData.currency,
+      amount: {
+        value: parseFloat(formData.amount),
+        currencyCode: formData.currency,
+      },
       counterparty: formData.counterparty,
       counterpartyCountry: formData.counterpartyCountry.toUpperCase(),
     });
@@ -61,7 +68,7 @@ export function AddTransactionDialog({ clients, onAddTransaction }: AddTransacti
     setIsOpen(false);
     setFormData({
       clientId: '',
-      type: 'DEPOSIT',
+      type: TransactionType.Deposit,
       amount: '',
       currency: 'USD',
       counterparty: '',
@@ -96,8 +103,8 @@ export function AddTransactionDialog({ clients, onAddTransaction }: AddTransacti
                 <SelectValue placeholder="Selecione o cliente" />
               </SelectTrigger>
               <SelectContent>
-                {clients.map((client) => (
-                  <SelectItem key={client.id} value={client.id}>
+                {clients.map((client, index) => (
+                  <SelectItem key={client.externalId} value={String(index + 1)}>
                     {client.name}
                   </SelectItem>
                 ))}
@@ -109,16 +116,16 @@ export function AddTransactionDialog({ clients, onAddTransaction }: AddTransacti
             <div className="space-y-2">
               <Label>Tipo *</Label>
               <Select
-                value={formData.type}
-                onValueChange={(v) => setFormData({ ...formData, type: v as TransactionType })}
+                value={String(formData.type)}
+                onValueChange={(v) => setFormData({ ...formData, type: Number(v) as TransactionType })}
               >
                 <SelectTrigger className="bg-muted/50">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="DEPOSIT">Depósito</SelectItem>
-                  <SelectItem value="WITHDRAWAL">Saque</SelectItem>
-                  <SelectItem value="TRANSFER">Transferência</SelectItem>
+                  <SelectItem value={String(TransactionType.Deposit)}>Depósito</SelectItem>
+                  <SelectItem value={String(TransactionType.Withdraw)}>Saque</SelectItem>
+                  <SelectItem value={String(TransactionType.Transfer)}>Transferência</SelectItem>
                 </SelectContent>
               </Select>
             </div>
