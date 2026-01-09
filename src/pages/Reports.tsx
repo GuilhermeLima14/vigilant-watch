@@ -116,10 +116,10 @@ export default function Reports() {
         </div>
       </div>
 
-      {/* <ReportsSummary reports={filteredReports} /> */}
+      <ReportsSummary reports={filteredReports} />
 
       <div className="grid gap-6 lg:grid-cols-3 mb-8">
-        {/* <VolumeByClientChart reports={filteredReports} /> */}
+        <VolumeByClientChart reports={filteredReports} />
         <AlertsByRiskChart reports={filteredReports} />
       </div>
 
