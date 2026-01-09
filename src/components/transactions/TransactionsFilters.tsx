@@ -1,5 +1,11 @@
+import { TransactionType } from '@/types/api';
 import { DataFilters, Filter } from '@/components/shared/DataFilters';
-import type { Client } from '@/types';
+
+interface Client {
+  externalId: string;
+  name: string;
+  countryCode: string;
+}
 
 interface TransactionsFiltersProps {
   search: string;
@@ -34,9 +40,9 @@ export function TransactionsFilters({
       placeholder: 'Tipo',
       options: [
         { value: 'all', label: 'Todos os Tipos' },
-        { value: 'DEPOSIT', label: 'Depósito' },
-        { value: 'WITHDRAWAL', label: 'Saque' },
-        { value: 'TRANSFER', label: 'Transferência' },
+        { value: String(TransactionType.Deposit), label: 'Depósito' },
+        { value: String(TransactionType.Withdraw), label: 'Saque' },
+        { value: String(TransactionType.Transfer), label: 'Transferência' },
       ],
     },
     {
@@ -47,8 +53,8 @@ export function TransactionsFilters({
       width: 'w-full sm:w-[200px]',
       options: [
         { value: 'all', label: 'Todos os Clientes' },
-        ...clients.map(client => ({
-          value: client.id,
+        ...clients.map((client, index) => ({
+          value: String(index + 1), // Internal ID
           label: client.name,
         })),
       ],

@@ -17,6 +17,16 @@ import { AlertsByRiskChart } from '@/components/reports/AlertsByRiskChart';
 import { ClientReportsTable } from '@/components/reports/ClientReportsTable';
 import { useToast } from '@/hooks/use-toast';
 
+// Helper para converter RiskLevel para string legível
+function getRiskLevelLabel(riskLevel: number): string {
+  const labels: Record<number, string> = {
+    0: 'Baixo',   // RiskLevel.Low
+    1: 'Médio',   // RiskLevel.Medium
+    2: 'Alto',    // RiskLevel.High
+  };
+  return labels[riskLevel] || 'Desconhecido';
+}
+
 export default function Reports() {
   const { getClientReports, clients } = useDataStore();
   const { toast } = useToast();
@@ -35,7 +45,7 @@ export default function Reports() {
       r.totalTransactions,
       r.totalVolume,
       r.alertCount,
-      r.riskLevel,
+      getRiskLevelLabel(r.riskLevel),
     ]);
     
     const csvContent = [
@@ -71,7 +81,10 @@ export default function Reports() {
 
   return (
     <AppLayout>
-      <PageHeader title="Relatórios" description="Análise consolidada por cliente">
+      <PageHeader 
+        title="Relatórios" 
+        description={`Análise consolidada por cliente • ${filteredReports.length} relatório(s)`}
+      >
         <div className="flex gap-2">
           <Button variant="outline" onClick={handleExportCSV}>
             <Download className="h-4 w-4 mr-2" />
@@ -94,7 +107,7 @@ export default function Reports() {
             <SelectContent>
               <SelectItem value="all">Todos os Clientes</SelectItem>
               {clients.map((client) => (
-                <SelectItem key={client.id} value={client.id}>
+                <SelectItem key={client.externalId} value={client.externalId}>
                   {client.name}
                 </SelectItem>
               ))}

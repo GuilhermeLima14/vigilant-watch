@@ -1,3 +1,4 @@
+import { AlertStatus, AlertSeverity } from '@/types/api';
 import { DataFilters, Filter } from '@/components/shared/DataFilters';
 
 interface AlertsFiltersProps {
@@ -31,10 +32,9 @@ export function AlertsFilters({
       placeholder: 'Status',
       options: [
         { value: 'all', label: 'Todos os Status' },
-        { value: 'NEW', label: 'Novo' },
-        { value: 'UNDER_REVIEW', label: 'Em Análise' },
-        { value: 'RESOLVED', label: 'Resolvido' },
-        { value: 'DISMISSED', label: 'Descartado' },
+        { value: String(AlertStatus.New), label: 'Novo' },
+        { value: String(AlertStatus.Review), label: 'Em Análise' },
+        { value: String(AlertStatus.Resolved), label: 'Resolvido' },
       ],
     },
     {
@@ -44,10 +44,10 @@ export function AlertsFilters({
       placeholder: 'Severidade',
       options: [
         { value: 'all', label: 'Todas' },
-        { value: 'LOW', label: 'Baixa' },
-        { value: 'MEDIUM', label: 'Média' },
-        { value: 'HIGH', label: 'Alta' },
-        { value: 'CRITICAL', label: 'Crítica' },
+        { value: String(AlertSeverity.Low), label: 'Baixa' },
+        { value: String(AlertSeverity.Medium), label: 'Média' },
+        { value: String(AlertSeverity.High), label: 'Alta' },
+        { value: String(AlertSeverity.Critical), label: 'Crítica' },
       ],
     },
   ];

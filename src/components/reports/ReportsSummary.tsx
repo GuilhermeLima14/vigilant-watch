@@ -1,4 +1,13 @@
-import type { ClientReport } from '@/types';
+import { RiskLevel } from '@/types/api';
+
+interface ClientReport {
+  clientId: string;
+  clientName: string;
+  totalTransactions: number;
+  totalVolume: number;
+  alertCount: number;
+  riskLevel: RiskLevel;
+}
 
 interface ReportsSummaryProps {
   reports: ClientReport[];
@@ -37,7 +46,7 @@ export function ReportsSummary({ reports }: ReportsSummaryProps) {
       </div>
       <div className="glass rounded-xl p-4 border border-border">
         <p className="text-sm text-muted-foreground">Alertas</p>
-        <p className="text-2xl font-bold">{totals.alerts}</p>
+        <p className="text-2xl font-bold text-warning">{totals.alerts}</p>
       </div>
     </div>
   );

@@ -13,13 +13,28 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { format } from 'date-fns';
-import type { Alert, AlertStatus } from '@/types';
+import { AlertStatus, AlertSeverity } from '@/types/api';
+
+interface Alert {
+  id: number;
+  clientId: number;
+  clientName?: string;
+  transactionId: number;
+  ruleCode: number;
+  ruleDescription: string;
+  severity: AlertSeverity;
+  status: AlertStatus;
+  resolutionNotes?: string;
+  resolvedBy?: string;
+  createdAt: Date;
+  resolvedAt?: Date;
+}
 
 interface AlertDetailDialogProps {
   alert: Alert | null;
   isOpen: boolean;
   onClose: () => void;
-  onUpdateStatus: (alertId: string, status: AlertStatus, notes: string) => void;
+  onUpdateStatus: (alertId: number, status: AlertStatus, notes: string) => void;
 }
 
 export function AlertDetailDialog({ alert, isOpen, onClose, onUpdateStatus }: AlertDetailDialogProps) {
@@ -57,7 +72,7 @@ export function AlertDetailDialog({ alert, isOpen, onClose, onUpdateStatus }: Al
             </div>
             <div>
               <Label className="text-muted-foreground text-xs">Regra</Label>
-              <p className="font-medium">{alert.ruleCode}</p>
+              <p className="font-medium">Código #{alert.ruleCode}</p>
             </div>
           </div>
           
@@ -117,26 +132,19 @@ export function AlertDetailDialog({ alert, isOpen, onClose, onUpdateStatus }: Al
             Fechar
           </Button>
           
-          {alert.status === 'NEW' && (
+          {alert.status === AlertStatus.New && (
             <Button
               variant="secondary"
-              onClick={() => handleUpdateStatus('UNDER_REVIEW')}
+              onClick={() => handleUpdateStatus(AlertStatus.Review)}
             >
               <Clock className="h-4 w-4 mr-2" />
               Iniciar Análise
             </Button>
           )}
           
-          {(alert.status === 'NEW' || alert.status === 'UNDER_REVIEW') && (
+          {(alert.status === AlertStatus.New || alert.status === AlertStatus.Review) && (
             <>
-              <Button
-                variant="outline"
-                onClick={() => handleUpdateStatus('DISMISSED')}
-              >
-                <XCircle className="h-4 w-4 mr-2" />
-                Descartar
-              </Button>
-              <Button onClick={() => handleUpdateStatus('RESOLVED')}>
+              <Button onClick={() => handleUpdateStatus(AlertStatus.Resolved)}>
                 <CheckCircle className="h-4 w-4 mr-2" />
                 Resolver
               </Button>

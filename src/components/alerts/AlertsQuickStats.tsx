@@ -1,5 +1,20 @@
 import { AlertTriangle, Clock, CheckCircle } from 'lucide-react';
-import type { Alert } from '@/types';
+import { AlertStatus, AlertSeverity } from '@/types/api';
+
+interface Alert {
+  id: number;
+  clientId: number;
+  clientName?: string;
+  transactionId: number;
+  ruleCode: number;
+  ruleDescription: string;
+  severity: AlertSeverity;
+  status: AlertStatus;
+  resolutionNotes?: string;
+  resolvedBy?: string;
+  createdAt: Date;
+  resolvedAt?: Date;
+}
 
 interface AlertsQuickStatsProps {
   alerts: Alert[];
@@ -7,10 +22,12 @@ interface AlertsQuickStatsProps {
 
 export function AlertsQuickStats({ alerts }: AlertsQuickStatsProps) {
   const stats = {
-    new: alerts.filter(a => a.status === 'NEW').length,
-    underReview: alerts.filter(a => a.status === 'UNDER_REVIEW').length,
-    resolved: alerts.filter(a => a.status === 'RESOLVED').length,
-    critical: alerts.filter(a => a.severity === 'CRITICAL' && a.status !== 'RESOLVED').length,
+    new: alerts.filter(a => a.status === AlertStatus.New).length,
+    underReview: alerts.filter(a => a.status === AlertStatus.Review).length,
+    resolved: alerts.filter(a => a.status === AlertStatus.Resolved).length,
+    critical: alerts.filter(a => 
+      a.severity === AlertSeverity.Critical && a.status !== AlertStatus.Resolved
+    ).length,
   };
 
   return (

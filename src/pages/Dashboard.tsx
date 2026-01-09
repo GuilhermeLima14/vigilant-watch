@@ -11,6 +11,11 @@ import { ptBR } from 'date-fns/locale';
 
 export default function Dashboard() {
   const { stats, alerts, transactions, clients } = useDataStore();
+  
+  // Filtrar transações de hoje
+  const transactionsToday = transactions.filter(t => 
+    t.occurredAt.toDateString() === new Date().toDateString()
+  );
 
   return (
     <AppLayout>
@@ -19,7 +24,7 @@ export default function Dashboard() {
         description={`Visão geral do sistema • ${format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR })}`}
       />
 
-      <StatsGrid stats={stats} transactionsCount={transactions.length} />
+      <StatsGrid stats={stats} transactionsCount={transactionsToday.length} />
 
       <div className="grid gap-6 lg:grid-cols-3 mb-8">
         <TransactionChart transactions={transactions} />

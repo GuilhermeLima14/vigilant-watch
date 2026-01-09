@@ -1,3 +1,4 @@
+import { RiskLevel, KYCStatus } from '@/types/api';
 import { DataFilters, Filter } from '@/components/shared/DataFilters';
 
 interface ClientsFiltersProps {
@@ -31,10 +32,9 @@ export function ClientsFilters({
       placeholder: 'Risco',
       options: [
         { value: 'all', label: 'Todos os Riscos' },
-        { value: 'LOW', label: 'Baixo' },
-        { value: 'MEDIUM', label: 'Médio' },
-        { value: 'HIGH', label: 'Alto' },
-        { value: 'CRITICAL', label: 'Crítico' },
+        { value: String(RiskLevel.Low), label: 'Baixo' },
+        { value: String(RiskLevel.Medium), label: 'Médio' },
+        { value: String(RiskLevel.High), label: 'Alto' },
       ],
     },
     {
@@ -44,10 +44,9 @@ export function ClientsFilters({
       placeholder: 'Status KYC',
       options: [
         { value: 'all', label: 'Todos os Status' },
-        { value: 'PENDING', label: 'Pendente' },
-        { value: 'APPROVED', label: 'Aprovado' },
-        { value: 'REJECTED', label: 'Rejeitado' },
-        { value: 'EXPIRED', label: 'Expirado' },
+        { value: String(KYCStatus.Pending), label: 'Pendente' },
+        { value: String(KYCStatus.Verified), label: 'Verificado' },
+        { value: String(KYCStatus.Rejected), label: 'Rejeitado' },
       ],
     },
   ];

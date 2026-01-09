@@ -2,7 +2,24 @@ import { ArrowUpRight, ArrowDownRight, ArrowLeftRight as ArrowTransfer } from 'l
 import { DataTable, Column } from '@/components/shared/DataTable';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { format } from 'date-fns';
-import type { Transaction, TransactionType } from '@/types';
+import { TransactionType } from '@/types/api';
+
+interface Transaction {
+  id: number;
+  externalId: string;
+  clientId: number;
+  clientName?: string;
+  type: TransactionType;
+  amount: {
+    value: number;
+    currencyCode: string;
+  };
+  counterPartyId: number;
+  counterparty: string;
+  counterpartyCountry: string;
+  occurredAt: Date;
+  createdAt: Date;
+}
 
 interface TransactionsTableProps {
   transactions: Transaction[];
@@ -19,11 +36,11 @@ function getFlagEmoji(countryCode: string): string {
 
 function getTypeIcon(type: TransactionType) {
   switch (type) {
-    case 'DEPOSIT':
+    case TransactionType.Deposit:
       return <ArrowDownRight className="h-4 w-4 text-success" />;
-    case 'WITHDRAWAL':
+    case TransactionType.Withdraw:
       return <ArrowUpRight className="h-4 w-4 text-destructive" />;
-    case 'TRANSFER':
+    case TransactionType.Transfer:
       return <ArrowTransfer className="h-4 w-4 text-primary" />;
   }
 }
@@ -56,10 +73,10 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
       header: 'Valor',
       accessor: (transaction) => (
         <span className={`font-mono font-medium ${
-          transaction.type === 'WITHDRAWAL' ? 'text-destructive' : 
-          transaction.type === 'DEPOSIT' ? 'text-success' : 'text-foreground'
+          transaction.type === TransactionType.Withdraw ? 'text-destructive' : 
+          transaction.type === TransactionType.Deposit ? 'text-success' : 'text-foreground'
         }`}>
-          {formatCurrency(transaction.amount, transaction.currency)}
+          {formatCurrency(transaction.amount.value, transaction.amount.currencyCode)}
         </span>
       ),
     },
@@ -82,7 +99,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
       header: 'Data',
       accessor: (transaction) => (
         <span className="text-muted-foreground text-sm">
-          {format(transaction.transactionDate, 'dd/MM/yyyy HH:mm')}
+          {format(transaction.occurredAt, 'dd/MM/yyyy HH:mm')}
         </span>
       ),
     },
@@ -93,6 +110,7 @@ export function TransactionsTable({ transactions }: TransactionsTableProps) {
       data={transactions} 
       columns={columns} 
       emptyMessage="Nenhuma transação encontrada"
+      getRowKey={(transaction) => transaction.externalId}
     />
   );
 }

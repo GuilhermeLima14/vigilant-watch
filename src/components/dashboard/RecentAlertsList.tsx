@@ -1,6 +1,21 @@
 import { ShieldAlert } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/status-badge';
-import type { Alert } from '@/types';
+import { AlertStatus, AlertSeverity } from '@/types/api';
+
+interface Alert {
+  id: number;
+  clientId: number;
+  clientName?: string;
+  transactionId: number;
+  ruleCode: number;
+  ruleDescription: string;
+  severity: AlertSeverity;
+  status: AlertStatus;
+  resolutionNotes?: string;
+  resolvedBy?: string;
+  createdAt: Date;
+  resolvedAt?: Date;
+}
 
 interface RecentAlertsListProps {
   alerts: Alert[];
@@ -8,7 +23,7 @@ interface RecentAlertsListProps {
 
 export function RecentAlertsList({ alerts }: RecentAlertsListProps) {
   const recentAlerts = alerts
-    .filter(a => a.status === 'NEW' || a.status === 'UNDER_REVIEW')
+    .filter(a => a.status === AlertStatus.New || a.status === AlertStatus.Review)
     .slice(0, 5);
 
   return (

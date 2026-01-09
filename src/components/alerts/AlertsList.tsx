@@ -2,21 +2,37 @@ import { Eye, AlertTriangle, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-import type { Alert, AlertStatus } from '@/types';
+import { AlertSeverity, AlertStatus } from '@/types/api';
+
+interface Alert {
+  id: number;
+  clientId: number;
+  clientName?: string;
+  transactionId: number;
+  ruleCode: number;
+  ruleDescription: string;
+  severity: AlertSeverity;
+  status: AlertStatus;
+  resolutionNotes?: string;
+  resolvedBy?: string;
+  createdAt: Date;
+  resolvedAt?: Date;
+}
 
 interface AlertsListProps {
   alerts: Alert[];
   onViewAlert: (alert: Alert) => void;
 }
 
-function getSeverityColor(severity: string): string {
+function getSeverityColor(severity: AlertSeverity): string {
   switch (severity) {
-    case 'CRITICAL':
+    case AlertSeverity.Critical:
       return 'border-l-destructive';
-    case 'HIGH':
+    case AlertSeverity.High:
       return 'border-l-destructive/70';
-    case 'MEDIUM':
+    case AlertSeverity.Medium:
       return 'border-l-warning';
+    case AlertSeverity.Low:
     default:
       return 'border-l-success';
   }
@@ -24,14 +40,12 @@ function getSeverityColor(severity: string): string {
 
 function getStatusIcon(status: AlertStatus) {
   switch (status) {
-    case 'NEW':
+    case AlertStatus.New:
       return <AlertTriangle className="h-4 w-4 text-info" />;
-    case 'UNDER_REVIEW':
+    case AlertStatus.Review:
       return <Clock className="h-4 w-4 text-warning" />;
-    case 'RESOLVED':
+    case AlertStatus.Resolved:
       return <CheckCircle className="h-4 w-4 text-success" />;
-    case 'DISMISSED':
-      return <XCircle className="h-4 w-4 text-muted-foreground" />;
   }
 }
 
@@ -55,7 +69,7 @@ export function AlertsList({ alerts, onViewAlert }: AlertsListProps) {
                   {getStatusIcon(alert.status)}
                   <span className="font-medium text-foreground">{alert.clientName}</span>
                   <span className="text-muted-foreground">•</span>
-                  <span className="text-sm text-muted-foreground">{alert.ruleCode}</span>
+                  <span className="text-sm text-muted-foreground">Regra #{alert.ruleCode}</span>
                 </div>
                 <p className="text-sm text-muted-foreground">{alert.ruleDescription}</p>
                 <p className="text-xs text-muted-foreground mt-2">

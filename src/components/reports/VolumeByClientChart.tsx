@@ -1,5 +1,14 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import type { ClientReport } from '@/types';
+import { RiskLevel } from '@/types/api';
+
+interface ClientReport {
+  clientId: string;
+  clientName: string;
+  totalTransactions: number;
+  totalVolume: number;
+  alertCount: number;
+  riskLevel: RiskLevel;
+}
 
 interface VolumeByClientChartProps {
   reports: ClientReport[];

@@ -19,12 +19,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import type { RiskLevel, KYCStatus } from '@/types';
+import { RiskLevel, KYCStatus } from '@/types/api';
 
 interface AddClientDialogProps {
   onAddClient: (client: {
     name: string;
-    country: string;
+    countryCode: string;
     riskLevel: RiskLevel;
     kycStatus: KYCStatus;
   }) => void;
@@ -34,13 +34,13 @@ export function AddClientDialog({ onAddClient }: AddClientDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    country: '',
-    riskLevel: 'LOW' as RiskLevel,
-    kycStatus: 'PENDING' as KYCStatus,
+    countryCode: '',
+    riskLevel: RiskLevel.Low,
+    kycStatus: KYCStatus.Pending,
   });
 
   const handleSubmit = () => {
-    if (!formData.name || !formData.country) {
+    if (!formData.name || !formData.countryCode) {
       return;
     }
     
@@ -48,9 +48,9 @@ export function AddClientDialog({ onAddClient }: AddClientDialogProps) {
     setIsOpen(false);
     setFormData({
       name: '',
-      country: '',
-      riskLevel: 'LOW',
-      kycStatus: 'PENDING',
+      countryCode: '',
+      riskLevel: RiskLevel.Low,
+      kycStatus: KYCStatus.Pending,
     });
   };
 
@@ -83,31 +83,33 @@ export function AddClientDialog({ onAddClient }: AddClientDialogProps) {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="country">País *</Label>
+            <Label htmlFor="country">Código do País *</Label>
             <Input
               id="country"
-              placeholder="Código do país (ex: BR, US)"
-              value={formData.country}
-              onChange={(e) => setFormData({ ...formData, country: e.target.value.toUpperCase() })}
+              placeholder="BR, US, DE..."
+              value={formData.countryCode}
+              onChange={(e) => setFormData({ ...formData, countryCode: e.target.value.toUpperCase() })}
               maxLength={2}
               className="bg-muted/50"
             />
+            <p className="text-xs text-muted-foreground">
+              Digite o código ISO de 2 letras (ex: BR, US, DE)
+            </p>
           </div>
           
           <div className="space-y-2">
             <Label>Nível de Risco</Label>
             <Select
-              value={formData.riskLevel}
-              onValueChange={(v) => setFormData({ ...formData, riskLevel: v as RiskLevel })}
+              value={String(formData.riskLevel)}
+              onValueChange={(v) => setFormData({ ...formData, riskLevel: Number(v) as RiskLevel })}
             >
               <SelectTrigger className="bg-muted/50">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="LOW">Baixo</SelectItem>
-                <SelectItem value="MEDIUM">Médio</SelectItem>
-                <SelectItem value="HIGH">Alto</SelectItem>
-                <SelectItem value="CRITICAL">Crítico</SelectItem>
+                <SelectItem value={String(RiskLevel.Low)}>Baixo</SelectItem>
+                <SelectItem value={String(RiskLevel.Medium)}>Médio</SelectItem>
+                <SelectItem value={String(RiskLevel.High)}>Alto</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -115,17 +117,16 @@ export function AddClientDialog({ onAddClient }: AddClientDialogProps) {
           <div className="space-y-2">
             <Label>Status KYC</Label>
             <Select
-              value={formData.kycStatus}
-              onValueChange={(v) => setFormData({ ...formData, kycStatus: v as KYCStatus })}
+              value={String(formData.kycStatus)}
+              onValueChange={(v) => setFormData({ ...formData, kycStatus: Number(v) as KYCStatus })}
             >
               <SelectTrigger className="bg-muted/50">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="PENDING">Pendente</SelectItem>
-                <SelectItem value="APPROVED">Aprovado</SelectItem>
-                <SelectItem value="REJECTED">Rejeitado</SelectItem>
-                <SelectItem value="EXPIRED">Expirado</SelectItem>
+                <SelectItem value={String(KYCStatus.Pending)}>Pendente</SelectItem>
+                <SelectItem value={String(KYCStatus.Verified)}>Verificado</SelectItem>
+                <SelectItem value={String(KYCStatus.Rejected)}>Rejeitado</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -1,5 +1,15 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import type { Client } from '@/types';
+import { RiskLevel } from '@/types/api';
+
+interface Client {
+  externalId: string;
+  name: string;
+  countryCode: string;
+  riskLevel: RiskLevel;
+  kycStatus: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 interface RiskDistributionChartProps {
   clients: Client[];
@@ -9,30 +19,24 @@ const COLORS = {
   success: 'hsl(142, 71%, 45%)',
   warning: 'hsl(38, 92%, 50%)',
   destructive: 'hsl(0, 84%, 60%)',
-  critical: '#991b1b',
 };
 
 export function RiskDistributionChart({ clients }: RiskDistributionChartProps) {
   const riskDistribution = [
     { 
       name: 'Baixo', 
-      value: clients.filter(c => c.riskLevel === 'LOW').length, 
+      value: clients.filter(c => c.riskLevel === RiskLevel.Low).length, 
       color: COLORS.success 
     },
     { 
       name: 'Médio', 
-      value: clients.filter(c => c.riskLevel === 'MEDIUM').length, 
+      value: clients.filter(c => c.riskLevel === RiskLevel.Medium).length, 
       color: COLORS.warning 
     },
     { 
       name: 'Alto', 
-      value: clients.filter(c => c.riskLevel === 'HIGH').length, 
+      value: clients.filter(c => c.riskLevel === RiskLevel.High).length, 
       color: COLORS.destructive 
-    },
-    { 
-      name: 'Crítico', 
-      value: clients.filter(c => c.riskLevel === 'CRITICAL').length, 
-      color: COLORS.critical 
     },
   ];
 
